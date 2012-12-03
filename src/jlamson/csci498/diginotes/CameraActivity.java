@@ -12,7 +12,6 @@ import android.widget.FrameLayout;
 /**
  * This activity runs the camera, and will display the icons representing notes.
  * @author darkmoose117
- *
  */
 public class CameraActivity extends Activity {
 
@@ -26,6 +25,10 @@ public class CameraActivity extends Activity {
 		frame.addView(cv);
 	}
 	
+	/**
+	 * The preview of the Camera that the user sees
+	 * @author darkmoose117
+	 */
 	public class CameraView extends SurfaceView {
 		
 		Camera cam;
@@ -33,6 +36,15 @@ public class CameraActivity extends Activity {
 		
 		public CameraView(Context c) {
 			super(c);
+			
+			cameraPreview = this.getHolder();
+			
+			/*The following line is in the tutorial I'm using. Commented out 
+			 * for now, but keep note of this
+			 */
+			//cameraPreview.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+			
+			cameraPreview.addCallback(surfaceHolderListener);
 		}
 		
 	}
