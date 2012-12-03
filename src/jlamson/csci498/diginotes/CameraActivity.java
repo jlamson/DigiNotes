@@ -14,7 +14,7 @@ import android.widget.FrameLayout;
  * @author darkmoose117
  *
  */
-public class CameraActivity extends Activity 
+public class CameraActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
