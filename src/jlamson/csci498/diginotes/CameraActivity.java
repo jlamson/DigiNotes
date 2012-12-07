@@ -1,5 +1,7 @@
 package jlamson.csci498.diginotes;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.ImageFormat;
@@ -18,6 +20,8 @@ import android.widget.FrameLayout;
  */
 public class CameraActivity extends Activity {
 
+	public static final String DEBUG_TAG = "jlamson.csci498.diginotes.DEBUG_TAG";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -53,9 +57,11 @@ public class CameraActivity extends Activity {
 		}
 
 		SurfaceHolder.Callback surfaceHolderListener = new SurfaceHolder.Callback() {
+			
 			public void surfaceCreated(SurfaceHolder holder) {
-				cam = Camera.open();
-
+				
+				cam = Camera.open(0);
+								
 				try {
 					cam.setPreviewDisplay(cameraPreview);
 				} catch (Throwable e) {
@@ -65,9 +71,14 @@ public class CameraActivity extends Activity {
 			public void surfaceChanged(SurfaceHolder holder, int format,
 					int width, int height) {
 				Parameters params = cam.getParameters();
-				params.setPreviewSize(width, height);
+				
+				List<Camera.Size> previewSizes = params.getSupportedPreviewSizes();
+				Camera.Size previewSize = previewSizes.get(0);
+			
+				params.setPreviewSize(previewSize.width, previewSize.height);
 				params.setPictureFormat(ImageFormat.JPEG);
 				cam.setParameters(params);
+				
 				cam.startPreview();
 			}
 
