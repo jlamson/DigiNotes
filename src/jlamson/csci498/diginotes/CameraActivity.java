@@ -8,6 +8,7 @@ import android.hardware.Camera.Parameters;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -21,17 +22,37 @@ import android.widget.FrameLayout;
 public class CameraActivity extends Activity {
 
 	public static final String DEBUG_TAG = "jlamson.csci498.diginotes.DEBUG_TAG";
+	public static SensorManager sensorManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_camera);
 
+		sensorManager = (SensorManager) this.getSystemService(Context.SENSOR_SERVICE);
+		sensorManager.registerListener(sensorListener,
+				sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
+				SensorManager.SENSOR_DELAY_FASTEST);
+
 		FrameLayout frame = (FrameLayout) findViewById(R.id.frame);
 		CameraView cv = new CameraView(this);
 		frame.addView(cv);
 	}
 
+	public SensorEventListener sensorListener = new SensorEventListener() {
+
+		float direction;
+
+		public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+		}
+
+		public void onSensorChanged(SensorEvent evt) {
+			float vals[] = evt.values;
+			direction = vals[0];
+		}
+	};
+	
 	/**
 	 * The preview of the Camera that the user sees
 	 * 
@@ -55,9 +76,8 @@ public class CameraActivity extends Activity {
 
 			cameraPreview.addCallback(surfaceHolderListener);
 		}
-
-		SurfaceHolder.Callback surfaceHolderListener = 
-		new SurfaceHolder.Callback() {
+		
+		SurfaceHolder.Callback surfaceHolderListener = new SurfaceHolder.Callback() {
 
 			public void surfaceCreated(SurfaceHolder holder) {
 
@@ -109,20 +129,4 @@ public class CameraActivity extends Activity {
 
 	}
 
-	public SensorEventListener listener = new SensorEventListener(){
-
-		float direction;
-		
-		public void onAccuracyChanged(Sensor sensor, int accuracy) {
-			
-		}
-
-		   public void onSensorChanged(SensorEvent evt)
-		   {
-		      float vals[] = evt.values;   
-		      direction = vals[0];
-		   }
-		};
-	
-	
 }
