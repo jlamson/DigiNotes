@@ -9,6 +9,9 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -23,16 +26,22 @@ public class CameraActivity extends Activity {
 
 	public static final String DEBUG_TAG = "jlamson.csci498.diginotes.DEBUG_TAG";
 	public static SensorManager sensorManager;
+	public static LocationManager locManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_camera);
 
-		sensorManager = (SensorManager) this.getSystemService(Context.SENSOR_SERVICE);
+		sensorManager = (SensorManager) this
+				.getSystemService(Context.SENSOR_SERVICE);
 		sensorManager.registerListener(sensorListener,
 				sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
 				SensorManager.SENSOR_DELAY_FASTEST);
+
+		locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 1,
+				gpsListener);
 
 		FrameLayout frame = (FrameLayout) findViewById(R.id.frame);
 		CameraView cv = new CameraView(this);
@@ -52,7 +61,27 @@ public class CameraActivity extends Activity {
 			direction = vals[0];
 		}
 	};
-	
+
+	LocationListener gpsListener = new LocationListener() {
+		Location curLocation;
+
+		public void onLocationChanged(Location location) {
+				curLocation = location;
+		}
+
+		public void onProviderDisabled(String provider) {
+		
+		}
+
+		public void onProviderEnabled(String provider) {
+		
+		}
+
+		public void onStatusChanged(String provider, int status, Bundle extras) {
+		
+		}
+	};
+
 	/**
 	 * The preview of the Camera that the user sees
 	 * 
@@ -76,7 +105,7 @@ public class CameraActivity extends Activity {
 
 			cameraPreview.addCallback(surfaceHolderListener);
 		}
-		
+
 		SurfaceHolder.Callback surfaceHolderListener = new SurfaceHolder.Callback() {
 
 			public void surfaceCreated(SurfaceHolder holder) {
