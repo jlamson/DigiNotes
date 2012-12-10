@@ -48,19 +48,45 @@ public class CameraActivity extends Activity {
 		frame.addView(cv);
 	}
 
-	public SensorEventListener sensorListener = new SensorEventListener() {
+	/*from http://www.devx.com/wireless/Article/43005/0/page/2 */
+	private SensorEventListener sensorListener = new SensorEventListener(){
+		   public float direction = (float) 0;
+		   public float inclination;
+		   public float rollingZ = (float)0;
 
-		float direction;
+		   public float kFilteringFactor = (float)0.05;
+		   public float aboveOrBelow = (float)0;
 
-		public void onAccuracyChanged(Sensor sensor, int accuracy) {
+		   public void onAccuracyChanged(Sensor arg0, int arg1){}
 
-		}
+		   public void onSensorChanged(SensorEvent evt)
+		   {
+		      float vals[] = evt.values;
+		      
+		      if(evt.sensor.getType() == Sensor.TYPE_ORIENTATION)
+		      {
+		         float rawDirection = vals[0];
 
-		public void onSensorChanged(SensorEvent evt) {
-			float vals[] = evt.values;
-			direction = vals[0];
-		}
-	};
+		         direction =(float) ((rawDirection * kFilteringFactor) + 
+		            (direction * (1.0 - kFilteringFactor)));
+
+		          inclination = 
+		            (float) ((vals[2] * kFilteringFactor) + 
+		            (inclination * (1.0 - kFilteringFactor)));
+
+		                
+		          if(aboveOrBelow > 0)
+		             inclination = inclination * -1;
+		          
+		         if(evt.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
+		         {
+		            aboveOrBelow =
+		               (float) ((vals[2] * kFilteringFactor) + 
+		               (aboveOrBelow * (1.0 - kFilteringFactor)));
+		         }
+		      }
+		   }
+		};
 
 	LocationListener gpsListener = new LocationListener() {
 		Location curLocation;
