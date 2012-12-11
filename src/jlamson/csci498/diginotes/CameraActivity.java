@@ -58,7 +58,8 @@ public class CameraActivity extends Activity {
 	}
 	
 	public void onClick(View view) {
-		helper.addNote("test", locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER), direction, inclination);
+		Note note = new Note("test", locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER), direction, inclination);
+		helper.addNote(note);
 	}
 	
 	/*from http://www.devx.com/wireless/Article/43005/0/page/2 */

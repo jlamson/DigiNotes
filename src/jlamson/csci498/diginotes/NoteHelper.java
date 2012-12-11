@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.location.Location;
 
 public class NoteHelper extends SQLiteOpenHelper {
 
@@ -26,14 +25,14 @@ public class NoteHelper extends SQLiteOpenHelper {
 		//no action
 	}
 	
-	public void addNote(String note, Location loc, float direction, float inclination) {
+	public void addNote(Note note) {
 		ContentValues cv = new ContentValues();
 		
-		cv.put("note", note);
-		cv.put("lat", loc.getLatitude());
-		cv.put("lon", loc.getLongitude());
-		cv.put("direction", direction);
-		cv.put("inclination", inclination);
+		cv.put("note", note.getContent());
+		cv.put("lat", note.getLoc().getLatitude());
+		cv.put("lon", note.getLoc().getLongitude());
+		cv.put("direction", note.getDirection());
+		cv.put("inclination", note.getInclination());
 	
 		getWritableDatabase().insert("notes", "note", cv);
 		
