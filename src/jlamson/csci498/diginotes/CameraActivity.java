@@ -13,8 +13,11 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.Display;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 /**
@@ -146,10 +149,22 @@ public class CameraActivity extends Activity {
 
 			public void surfaceChanged(SurfaceHolder holder, int format,
 					int width, int height) {
+				
 				Parameters params = cam.getParameters();
-
-				Camera.Size previewSize = getBestPreviewSize(width, height);
-				params.setPreviewSize(previewSize.width, previewSize.height);
+				Display display = ((WindowManager)getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
+				
+				if(display.getRotation() == Surface.ROTATION_0) {
+		            params.setPreviewSize(height, width);                           
+		            cam.setDisplayOrientation(90);
+		        } if(display.getRotation() == Surface.ROTATION_90) {
+		            params.setPreviewSize(width, height);                           
+		        } if(display.getRotation() == Surface.ROTATION_180) {
+		            params.setPreviewSize(height, width);               
+		        } if(display.getRotation() == Surface.ROTATION_270) {
+		            params.setPreviewSize(width, height);
+		            cam.setDisplayOrientation(180);
+		        }
+				
 				params.setPictureFormat(ImageFormat.JPEG);
 				cam.setParameters(params);
 
@@ -161,25 +176,6 @@ public class CameraActivity extends Activity {
 				cam.release();
 			}
 
-			private Camera.Size getBestPreviewSize(int width, int height) {
-				Camera.Size result = null;
-				Camera.Parameters p = cam.getParameters();
-				for (Camera.Size size : p.getSupportedPreviewSizes()) {
-					if (size.width <= width && size.height <= height) {
-						if (result == null) {
-							result = size;
-						} else {
-							int resultArea = result.width * result.height;
-							int newArea = size.width * size.height;
-
-							if (newArea > resultArea) {
-								result = size;
-							}
-						}
-					}
-				}
-				return result;
-			}
 		};
 
 	}
