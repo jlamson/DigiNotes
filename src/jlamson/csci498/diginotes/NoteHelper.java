@@ -1,9 +1,13 @@
 package jlamson.csci498.diginotes;
 
+import java.util.ArrayList;
+
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.location.Location;
 
 public class NoteHelper extends SQLiteOpenHelper {
 
@@ -36,6 +40,24 @@ public class NoteHelper extends SQLiteOpenHelper {
 	
 		getWritableDatabase().insert("notes", "note", cv);
 		
+	}
+	
+	public Cursor getNotesNearMe(Location loc, float direction, float inclination) {
+		String[] args = 
+			{
+				String.valueOf(loc.getLongitude()-.0005),
+				String.valueOf(loc.getLongitude()+.0005),
+				String.valueOf(loc.getLatitude()-.0005),
+				String.valueOf(loc.getLatitude()+.0005),
+				String.valueOf((direction-10)%360),
+				String.valueOf((direction+10)%360),
+				String.valueOf((inclination-10)%360),
+				String.valueOf((inclination+10)%360),
+			};
+		Cursor c = getReadableDatabase().rawQuery(
+				"SELECT _id,  note FROM notes WHERE lon>=? AND lon<=? AND lat>=? AND lat<=? AND direction>=? AND direction<=? AND inclination>=? AND inclination<=?,",
+				args);
+		return c;
 	}
 	
 	
