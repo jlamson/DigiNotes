@@ -4,5 +4,6 @@
     <string name="app_name">DigiNotes</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
-
+	<string name="add_button_label">Take a note!</string>
+	<string name="check_button_label">Check!</string>
 </resources>
