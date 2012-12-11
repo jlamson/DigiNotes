@@ -20,7 +20,6 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 /**
  * This activity runs the camera, and will display the icons representing notes.
@@ -30,9 +29,14 @@ import android.widget.Toast;
 public class CameraActivity extends Activity {
 
 	public static final String DEBUG_TAG = "jlamson.csci498.diginotes.DEBUG_TAG";
-	public static SensorManager sensorManager;
-	public static LocationManager locManager;
-
+	private static SensorManager sensorManager;
+	private static LocationManager locManager;
+	
+	public float direction = (float) 0;
+	public float inclination;
+	
+	private NoteHelper helper = new NoteHelper(this);
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -54,13 +58,11 @@ public class CameraActivity extends Activity {
 	}
 	
 	public void onClick(View view) {
-		Toast.makeText(this, "CLICK!", Toast.LENGTH_LONG).show();
+		helper.addNote("test", locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER), direction, inclination);
 	}
 	
 	/*from http://www.devx.com/wireless/Article/43005/0/page/2 */
 	private SensorEventListener sensorListener = new SensorEventListener(){
-		   public float direction = (float) 0;
-		   public float inclination;
 		   public float rollingZ = (float)0;
 
 		   public float kFilteringFactor = (float)0.05;

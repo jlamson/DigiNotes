@@ -18,7 +18,7 @@ public class NoteHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL("CREATE TABLE notes (_id INTEGER PRIMARY KEY AUTOINCREMENT, note TEXT, lat REAL, lon REAL, direction REAL, inclination REAL");
+		db.execSQL("CREATE TABLE notes (_id INTEGER PRIMARY KEY AUTOINCREMENT, note TEXT, lat REAL, lon REAL, direction REAL, inclination REAL);");
 	}
 
 	@Override
