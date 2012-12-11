@@ -56,7 +56,6 @@ public class NoteHelper extends SQLiteOpenHelper {
 		Cursor c = getReadableDatabase().rawQuery(
 				"SELECT _ID, note FROM notes WHERE lon>=? AND lon<=? AND lat>=? AND lat<=? AND direction>=? AND direction<=? AND inclination>=? AND inclination<=?",
 				args);
-		Log.d(CameraActivity.DEBUG_TAG, c.toString());
 		return c;
 	}
 	

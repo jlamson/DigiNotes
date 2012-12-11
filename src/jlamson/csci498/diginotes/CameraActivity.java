@@ -61,6 +61,7 @@ public class CameraActivity extends Activity {
 	}
 	
 	public void onClickAddNote(View view) {
+		
 		Note note = new Note("test", locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER), direction, inclination);
 		helper.addNote(note);
 		Log.d(DEBUG_TAG, note.toString());
@@ -69,8 +70,11 @@ public class CameraActivity extends Activity {
 	public void onClickCheck(View view) {
 		Cursor c = helper.getNotesNearMe(locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER),
 				direction, inclination);
-		c.moveToFirst();
-		Toast.makeText(this, c.getString(0) + ", " + c.getString(1), Toast.LENGTH_LONG);
+		if (c.moveToFirst()) {
+			Toast.makeText(this, c.getString(0) + ", " + c.getString(1), Toast.LENGTH_LONG).show();
+		} else {
+			Toast.makeText(this, "No notes here", Toast.LENGTH_LONG).show();
+		}
 	}
 	
 	/*from http://www.devx.com/wireless/Article/43005/0/page/2 */

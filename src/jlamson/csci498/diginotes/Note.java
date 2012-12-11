@@ -24,4 +24,20 @@ public class Note {
 	public Location getLoc() 		{ return loc; }
 	public float getDirection() 	{ return direction; }
 	public float getInclination()	{ return inclination; }
+	
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder	.append("Content: ")
+				.append(content)
+				.append(", Lat: ")
+				.append(loc.getLatitude())
+				.append(", Lon: ")
+				.append(loc.getLongitude())
+				.append(", Dir: ")
+				.append(direction)
+				.append(", Incl: ")
+				.append(inclination);
+		return builder.toString();
+	}
 }
