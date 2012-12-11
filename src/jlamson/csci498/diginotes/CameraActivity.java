@@ -17,8 +17,10 @@ import android.view.Display;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 /**
  * This activity runs the camera, and will display the icons representing notes.
@@ -50,7 +52,11 @@ public class CameraActivity extends Activity {
 		CameraView cv = new CameraView(this);
 		frame.addView(cv);
 	}
-
+	
+	public void onClick(View view) {
+		Toast.makeText(this, "CLICK!", Toast.LENGTH_LONG).show();
+	}
+	
 	/*from http://www.devx.com/wireless/Article/43005/0/page/2 */
 	private SensorEventListener sensorListener = new SensorEventListener(){
 		   public float direction = (float) 0;
