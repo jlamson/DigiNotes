@@ -2,6 +2,7 @@ package jlamson.csci498.diginotes;
 
 import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.hardware.Camera.Parameters;
@@ -13,6 +14,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -20,6 +22,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 /**
  * This activity runs the camera, and will display the icons representing notes.
@@ -57,10 +60,17 @@ public class CameraActivity extends Activity {
 		frame.addView(cv);
 	}
 	
-	public void onClick(View view) {
+	public void onClickAddNote(View view) {
 		Note note = new Note("test", locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER), direction, inclination);
 		helper.addNote(note);
-		
+		Log.d(DEBUG_TAG, note.toString());
+	}
+	
+	public void onClickCheck(View view) {
+		Cursor c = helper.getNotesNearMe(locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER),
+				direction, inclination);
+		c.moveToFirst();
+		Toast.makeText(this, c.getString(0) + ", " + c.getString(1), Toast.LENGTH_LONG);
 	}
 	
 	/*from http://www.devx.com/wireless/Article/43005/0/page/2 */

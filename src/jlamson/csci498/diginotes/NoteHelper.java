@@ -1,13 +1,12 @@
 package jlamson.csci498.diginotes;
 
-import java.util.ArrayList;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.location.Location;
+import android.util.Log;
 
 public class NoteHelper extends SQLiteOpenHelper {
 
@@ -55,8 +54,9 @@ public class NoteHelper extends SQLiteOpenHelper {
 				String.valueOf((inclination+10)%360),
 			};
 		Cursor c = getReadableDatabase().rawQuery(
-				"SELECT _id,  note FROM notes WHERE lon>=? AND lon<=? AND lat>=? AND lat<=? AND direction>=? AND direction<=? AND inclination>=? AND inclination<=?,",
+				"SELECT _ID, note FROM notes WHERE lon>=? AND lon<=? AND lat>=? AND lat<=? AND direction>=? AND direction<=? AND inclination>=? AND inclination<=?",
 				args);
+		Log.d(CameraActivity.DEBUG_TAG, c.toString());
 		return c;
 	}
 	
